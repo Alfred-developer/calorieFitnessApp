@@ -34,7 +34,7 @@ const UseFoodStorage = () => {
     }
 
 
-    // Guarda la informacion de la comida
+    // Guarda la informacion de la comidas
     const handleSaveFood = async({calories, name, portion}: Meal) => {
         try{
             const result = await saveInfoToStorage(My_Food_Key, {calories, name, portion});
