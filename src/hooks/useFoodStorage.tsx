@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Meal } from '../types';
+import { isToday } from 'date-fns';
 
 const My_Food_Key = '@MyFood:Key';
 const My_Today_Food_Key = '@MyTodayFood:Key'
@@ -71,9 +72,25 @@ const UseFoodStorage = () => {
         try{
             const foods = await AsyncStorage.getItem(My_Today_Food_Key);
             if(foods !== null ){
-                const parsedFood = JSON.parse(foods);
-                return Promise.resolve(parsedFood);
+                const parsedFood = JSON.parse(foods) as Meal[];
+
+                return Promise.resolve(parsedFood.filter(meal => meal.date && isToday(new Date(meal.date))));
             }
+        }catch(error){
+            return Promise.reject(error);
+        }
+    }
+
+    const handleRemoveTodayFood = async( index: number ) => {
+        try{
+            const todayFood = await handleGetTodayFood();
+            const filterITems = todayFood.filter((item: Meal, itemIndex) => {
+                return itemIndex !== index;
+            });
+
+            await AsyncStorage.setItem(My_Today_Food_Key, JSON.stringify(filterITems)); 
+
+            return Promise.resolve();
         }catch(error){
             return Promise.reject(error);
         }
@@ -83,10 +100,9 @@ const UseFoodStorage = () => {
         onSaveFood: handleSaveFood,
         onGetFoods: handleGetFoods,
         onSaveTodayFood: handleSaveTodayFoods,
-        onGetTodayFood: handleGetTodayFood
+        onGetTodayFood: handleGetTodayFood,
+        onDeleteTodaysFood: handleRemoveTodayFood
     }
 }
 
-//  Metodo para guardar informacion de comida del dia de hoy
-//  Metodo para obtener la comida del dia de hoy
 export default UseFoodStorage;

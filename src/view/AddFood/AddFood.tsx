@@ -81,7 +81,7 @@ const AddFood = () => {
 
             <ScrollView style={styles.content}>
                 {foods?.map(meal => (
-                    <MealItem key={`my-meal-item-${meal.name}`} {...meal} />
+                    <MealItem key={`my-meal-item-${meal.name}`} {...meal} isAbleToAdd/>
                 ))}
             </ScrollView>
 
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
         padding: 15,
         backgroundColor: '#fff',
         flex: 1,
+        paddingHorizontal: 15
     },
     addFoodContainer: {
         flexDirection: 'row',
