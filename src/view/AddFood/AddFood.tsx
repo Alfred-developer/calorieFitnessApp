@@ -25,7 +25,7 @@ const AddFood = () => {
     }
 
     useEffect(() => {
-        loadFoods().catch(null);
+        loadFoods().catch(null);    
     }, []);
 
     const handleModalClose = async (shouldUpdate?: boolean) => {
