@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text } from "react-native";
 import React, { FC } from "react";
 import CircularProgress from "react-native-circular-progress-indicator";
+import styleGlobal from "../../styleGlobal";
 
 export type TodayCaloriesProps = {
     total: number | string;
@@ -13,7 +14,11 @@ const TodayCalories:FC<TodayCaloriesProps> = ({ total, consumed, remaining, perc
     return(
         <View style={styles.container}>
             <View style={styles.leftContainer}>
-                <CircularProgress value={percentage} valueSuffix="%" />
+                <CircularProgress value={percentage} 
+                    valueSuffix="%" 
+                    progressValueColor={styleGlobal.backgroundGlobal.background}
+                    activeStrokeColor={styleGlobal.backgroundGlobal.background}
+                />
             </View>
             <View style={styles.rightContainer}>
                 <Text style={styles.legendToday}>Today</Text>

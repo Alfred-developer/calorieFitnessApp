@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Alert, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Header from "../../components/Header";
 import { Button, Icon, Input } from "@rneui/base";
 import AddFoodModal from "../../components/AddFoodModal/addFoodModal";
@@ -7,8 +7,9 @@ import UseFoodStorage from "../../hooks/useFoodStorage";
 import { ScrollView } from "react-native";
 import MealItem from "../../components/MealItem/MealItem";
 import { Meal } from "../../types";
+import styleGlobal from "../../styleGlobal";
 
-const AddFood = () => {
+const AddFood = ({navigation}) => {
     const [visible, setVisible] = useState<boolean>(false); 
     const [foods, setFoods] = useState([]);
     const [search, setSearch] = useState('')
@@ -48,19 +49,22 @@ const AddFood = () => {
 
     return(
         <SafeAreaView style={styles.container}>
-            <Header />
+            <Header navigation={navigation} />
             
             <View style={styles.addFoodContainer}>
                 <View style={styles.legendContainer}>
                     <Text style={styles.addFoodLegend}>Add Food</Text>
                 </View>
                 <View style={styles.addFoodBtnContainer}>
-                    <Button 
+                    {/* <Button 
                         icon={<Icon name="add-circle-outline" color={'#fff'} />} 
                         radius={"lg"}
                         color="#4ecb71"
                         onPress={() => setVisible(true)}
-                    />
+                    /> */}
+                    <TouchableOpacity style={[styles.btnAdd]} onPress={() => setVisible(true)}>
+                        <Icon name="add-circle-outline" color="white"/>
+                    </TouchableOpacity>
                 </View>
             </View>
             
@@ -69,13 +73,16 @@ const AddFood = () => {
                     <Input placeholder="apples, pie, soda..." value={search} onChangeText={(text:string) => setSearch(text)}/>
                 </View>
                 <View>
-                    <Button 
+                    {/* <Button 
                         title={"Search"} 
                         radius={"lg"} 
                         color="#4ecb71" 
-                        titleStyle={styles.searchBtnTitle}
+                        titleStyle={styles.searchBtn}
                         onPress={handleSearchPress}    
-                    />
+                    /> */}
+                    <TouchableOpacity style={styles.btnAdd} onPress={handleSearchPress} >
+                        <Text style={styles.searchBtn}>Search</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -123,10 +130,16 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: -12
     },
-    searchBtnTitle: {
-        color: '#000',
-        fontSize: 14
-    }
+    searchBtn: {
+        color: '#fff',
+        fontSize: 14,
+        fontWeight: 'bold'
+    },
+    btnAdd: {
+        backgroundColor: styleGlobal.backgroundGlobal.background, // AppStyles.backgroundGlobal.background,
+        padding: 10, 
+        borderRadius: 13
+    },
 })
 
 export default AddFood;

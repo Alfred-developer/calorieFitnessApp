@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Header from "../../components/Header/Header";
 import { Button, Icon } from '@rneui/themed';
 import UseFoodStorage from "../../hooks/useFoodStorage";
@@ -7,6 +7,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Meal } from "../../types";
 import TodayCalories, { TodayCaloriesProps } from "../../components/TodayCalories/todayCalories";
 import TodayMeals from "../../components/TodayMeals/todayMeals";
+import styleGlobal from "../../styleGlobal";
 
 const totalCaloriesPerDay = 2000; 
 
@@ -58,17 +59,21 @@ const Home = ({navigation}) => {
     console.log(todayFood);
 
     return(
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View>
-                <Header />
+                <Header navigation={navigation}/>
                 <View style={styles.caloriesContainer}>
                     <View style={styles.leftContainer}>
                         <Text style={styles.caloriesLegend}>Calories</Text>
                     </View>
                     <View style={styles.rightContainer}>
-                    <Button radius={"lg"} type="solid" color="#4ecb71"  onPress={handleAddCaloriesPress}>
+                    {/* <Button radius={"lg"} type="solid" color="#4ecb71"  onPress={handleAddCaloriesPress}>
                         <Icon name="add-circle-outline" color="white"/>
-                    </Button>
+                    </Button> */}
+
+                    <TouchableOpacity style={[styles.btnAdd]}   onPress={handleAddCaloriesPress}>
+                        <Icon name="add-circle-outline" color="white"/>
+                    </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -76,14 +81,19 @@ const Home = ({navigation}) => {
             <TodayCalories {...todayStadistics}/>
 
             <TodayMeals foods={todayFood} onCompleteAddRemove={() => loadTodayFood()}/>
-        </SafeAreaView>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({ 
+    btnAdd: {
+        padding: 10, 
+        borderRadius: 13,
+        backgroundColor: styleGlobal.backgroundGlobal.background
+    },
     container: {
         flex: 1,
-        paddingTop: 50,
+        paddingTop: 0,
         padding: 15,
         backgroundColor: '#fff',
         paddingHorizontal: 15
