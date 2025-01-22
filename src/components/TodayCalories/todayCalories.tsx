@@ -18,6 +18,10 @@ const TodayCalories:FC<TodayCaloriesProps> = ({ total, consumed, remaining, perc
                     valueSuffix="%" 
                     progressValueColor={styleGlobal.backgroundGlobal.background}
                     activeStrokeColor={styleGlobal.backgroundGlobal.background}
+                    radius={65}
+                    inActiveStrokeOpacity={0.5}
+                    activeStrokeWidth={20}
+                    inActiveStrokeWidth={20}
                 />
             </View>
             <View style={styles.rightContainer}>

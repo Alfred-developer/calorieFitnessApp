@@ -1,5 +1,5 @@
 export default AppStyles = {
     backgroundGlobal: {
-        background: '#46aaca',
+        background: '#4ecb71', // #46aaca
     }
 }

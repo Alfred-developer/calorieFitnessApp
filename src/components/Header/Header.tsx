@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Icon } from "@rneui/base";
 import React, { useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, RefreshControl, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 
 const staticInfo = {
     name: 'Alfredo Navarro',
@@ -11,59 +11,69 @@ const staticInfo = {
 
 const Header = ({navigation}) => {
     const { canGoBack, goBack } = useNavigation();
-    const [name, setName] = useState('');
+    const [ name, setName ] = useState('');
+    const [ imgUser, setImgUser ] = useState(null);
+    const [refreshing, setRefreshing] = React.useState(false);
 
     useEffect(() => { 
         console.log('recargo header');
-        getNameUSer();
+        getDataUser();
     }, []);
 
-    const getNameUSer = async () => {
+    const getDataUser = async () => {
         setName(await AsyncStorage.getItem('name'));
+        setImgUser(await AsyncStorage.getItem('imageProfileUser'));
     }
 
     const handleClickPofile = () => {
         navigation.navigate('MiPerfil');
     }
 
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        getDataUser();
+        setTimeout(() => {
+        setRefreshing(false);
+        }, 1000);
+    }, []);
+
     return(
-        <View style={styles.container}>
-            { canGoBack() ?  (
-                <View style={styles.arrowContainer}>
-                    <Button 
-                        icon={<Icon name="arrow-back" size={24} />}  
-                        type="clear" 
-                        onPress={() => goBack()}
-                    />
-                </View>
-            ): 
-            undefined
-            }
+        <><View style={styles.container}>
+            <ScrollView
+                contentContainerStyle={styles.scrollView}
+                refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }>
 
-            { canGoBack() ?  (
-                <Pressable onPress={handleClickPofile} style={{width: '90%', marginTop: 20, flexDirection: 'row'}}>
+            {canGoBack() ? (
+                <Pressable onPress={handleClickPofile} style={{ width: '100%', marginTop: 20, flexDirection: 'row' }}>
+                    <View>
+                        <Button
+                            icon={<Icon name="arrow-back" size={24} />}
+                            type="clear"
+                            onPress={() => goBack()} />
+                    </View>
                     <View style={styles.leftContainer}>
                         <Text style={styles.name}>{`Hello ${name !== null ? name : ""}`}</Text>
                         <Text style={styles.subtitle}>Welcome back to you goal</Text>
                     </View>
                     <View style={styles.rightContainer}>
-                        <Image source={require('../../assets-expo/avatar.png')} style={styles.profileImage} />
+                        <Image source={imgUser} style={styles.profileImage} />
                     </View>
                 </Pressable>
-            ): 
-                <Pressable onPress={handleClickPofile} style={{width: '100%', marginTop: 20, flexDirection: 'row'}}>
+            ) :
+                <Pressable onPress={handleClickPofile} style={{ width: '100%', marginTop: 20, flexDirection: 'row' }}>
                     <View style={styles.leftContainer}>
                         <Text style={styles.name}>{`Hello ${name !== null ? name : ""}`}</Text>
                         <Text style={styles.subtitle}>Welcome back to you goal</Text>
                     </View>
                     <View style={styles.rightContainer}>
-                        <Image source={require('../../assets-expo/avatar.png')} style={styles.profileImage} />
+                        <Image source={imgUser} style={styles.profileImage} />
                     </View>
                 </Pressable>
             }
-
-            
-        </View>
+            </ScrollView>
+        </View></>
     )
 };
 
@@ -90,16 +100,14 @@ const styles = StyleSheet.create({
         color: '#808080'
     },
     profileImage: {
-        width: 40,
-        height: 40,
+        width: 50,
+        height: 50,
         borderRadius: 24,
         backgroundColor: '#0553'
     },
-    arrowContainer: {
-        marginLeft: -12,
-        position: 'relative',
-        top: 20
-    }
+    scrollView: {
+        // flex: 1,
+    },
 })
 
 export default Header;

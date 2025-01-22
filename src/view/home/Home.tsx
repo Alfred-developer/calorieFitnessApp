@@ -8,6 +8,10 @@ import { Meal } from "../../types";
 import TodayCalories, { TodayCaloriesProps } from "../../components/TodayCalories/todayCalories";
 import TodayMeals from "../../components/TodayMeals/todayMeals";
 import styleGlobal from "../../styleGlobal";
+import { ThemeProvider } from "../../themes/themeContext";
+import ThemeSwitcher from "../../themes/themeSwitcher";
+import ThemedButton from "../../themes/themedButtons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const totalCaloriesPerDay = 2000; 
 
@@ -40,6 +44,7 @@ const Home = ({navigation}) => {
     const loadTodayFood = useCallback(async() => {
         try{
             const todayFoodResponse = (await onGetTodayFood()) as Meal[];
+            if(todayFoodResponse === undefined){return}
             calculatTodayStatics(todayFoodResponse);
             setTodayFood(todayFoodResponse);
         }catch(error){
@@ -67,13 +72,15 @@ const Home = ({navigation}) => {
                         <Text style={styles.caloriesLegend}>Calories</Text>
                     </View>
                     <View style={styles.rightContainer}>
-                    {/* <Button radius={"lg"} type="solid" color="#4ecb71"  onPress={handleAddCaloriesPress}>
-                        <Icon name="add-circle-outline" color="white"/>
-                    </Button> */}
 
                     <TouchableOpacity style={[styles.btnAdd]}   onPress={handleAddCaloriesPress}>
                         <Icon name="add-circle-outline" color="white"/>
                     </TouchableOpacity>
+
+                    {/* <ThemeProvider>
+                        <ThemeSwitcher />
+                        <ThemedButton title="Click Me" onPress={() => alert('Button Pressed!')} />
+                    </ThemeProvider>  */}
                     </View>
                 </View>
             </View>
