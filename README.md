@@ -3,7 +3,7 @@
 	<img alt="Logo" src="assets/kcal.png" height="150px" width="150px" />
 </h1>
 <h3 align="center">
-  App with recent news from NASA !
+  App to control the calories you eat!
 </h3>
 
 <p align="center"></p>
