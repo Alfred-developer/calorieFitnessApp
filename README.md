@@ -69,11 +69,11 @@ git clone https://github.com/Alfred-developer/calorieFitnessApp.git
 ```bash
 cd calorieFitnessApp
 ```
-**3. Access the folder**
+**3. Install Expo CLI**
 ```bash
 npm install -g expo-cli exp
 ```
-**4. Access the folder**
+**4. Run proyect**
 ```bash
 npx expo start
 ```
